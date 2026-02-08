@@ -1,0 +1,48 @@
+DEMPSTER-SHAFER FUSION EVALUATION REPORT
+========================================
+
+Date: 08-Feb-2026 21:56:53
+
+Data Source:
+  File: D:\w\Documents\199\data\Phase1_Wired_Dataset\Consolidated\Consolidated_AMC_Results.mat
+  Total frames: 7000
+  SNR range: 0.0 to 15.0 dB
+
+DS Configuration:
+  Uncertainty threshold: 0.050
+  Conflict threshold: 0.950
+  Reliability weighting: true
+
+Individual Classifier Performance:
+  ViT:              68.09%
+  HOC:              0.00%
+  Cyclostationary:  56.51%
+  Best Individual:  68.09%
+
+Fusion Performance:
+  DS Fusion Accuracy:   67.13%
+  Fusion Gain:          -0.96%
+  Average Confidence:   73.59%
+  Average Conflict:     60.09%
+  High Conflict (>95%): 10 frames (0.1%)
+  Fusion Failures:      0
+
+Per-Modulation Accuracy:
+  Modulation | Fusion | ViT   | HOC   | Cyclo
+  ------------------------------------------------
+  BPSK       |  76.5% | 100.0% |   0.0% |  71.7%
+  QPSK       |  49.3% |  38.7% |   0.0% |  38.0%
+  8PSK       |  71.4% |  79.5% |   0.0% |  44.5%
+  16QAM      |  75.3% |  26.9% |   0.0% |  90.8%
+  64QAM      |  63.2% |  95.4% |   0.0% |  37.6%
+
+SNR Performance:
+  SNR (dB) | Fusion | ViT   | HOC   | Cyclo
+  ------------------------------------------------
+      0.0  |  21.6% |  77.2% |   0.0% |  20.0%
+      2.5  |  44.9% |  78.3% |   0.0% |  20.4%
+      5.0  |  67.4% |  73.2% |   0.0% |  40.0%
+      7.5  |  67.9% |  66.0% |   0.0% |  44.8%
+     10.0  |  85.1% |  62.5% |   0.0% |  84.6%
+     12.5  |  90.8% |  60.5% |   0.0% |  93.1%
+     15.0  |  92.2% |  58.9% |   0.0% |  92.7%

@@ -15,16 +15,27 @@ num_classes = length(probabilities);
 % Initialize BPA (classes + uncertainty)
 bpa = zeros(1, num_classes + 1);
 
+% Check if probabilities are all zeros (missing data or unsupported class)
+if sum(probabilities) < 1e-6
+    % All mass goes to uncertainty (complete ignorance)
+    bpa(end) = 1.0;
+    return;
+end
+
+% Normalize probabilities if needed (should sum to 1)
+prob_sum = sum(probabilities);
+if abs(prob_sum - 1.0) > 1e-3
+    probabilities = probabilities / prob_sum;
+end
+
 % Discount probabilities by reliability
 % m(A) = r * P(A)
-% m(Θ) = 1 - r + r * threshold
 discounted_probs = reliability * probabilities;
 
 % Assign mass to each class
 bpa(1:num_classes) = discounted_probs;
 
 % Calculate remaining mass for uncertainty (frame of discernment Θ)
-% This represents "don't know"
 total_belief = sum(bpa(1:num_classes));
 remaining_mass = 1 - total_belief;
 
@@ -40,7 +51,7 @@ end
 % Assign uncertainty mass
 bpa(end) = uncertainty;
 
-% Verify BPA sums to 1
-assert(abs(sum(bpa) - 1) < 1e-6, 'BPA must sum to 1');
+% Verify BPA sums to 1 (with tolerance for floating point)
+assert(abs(sum(bpa) - 1) < 1e-6, 'BPA must sum to 1, got %.6f', sum(bpa));
 
 end
