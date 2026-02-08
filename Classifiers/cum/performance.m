@@ -80,43 +80,58 @@ function performance(filename)
         accuracy_per_snr = zeros(size(snr_bins));
         dist_per_snr = zeros(size(snr_bins));
         
+        % Per-modulation SNR accuracy storage
+        class_snr_acc = zeros(n_classes, length(snr_bins));
+        
         for i = 1:length(snr_bins)
-            mask = data.SNR == snr_bins(i);
+            curr_snr = snr_bins(i);
+            mask = data.SNR == curr_snr;
             n_samples = sum(mask);
             accuracy_per_snr(i) = mean(data.Correct(mask)) * 100;
             
             % Friis Equation: 6dB loss = 2x distance
-            dist_per_snr(i) = 10^((snr_max - snr_bins(i))/20);
+            dist_per_snr(i) = 10^((snr_max - curr_snr)/20);
             
             fprintf('%-10.1f | %-15.2f | %-10d | %-10.2f%%\n', ...
-                snr_bins(i), dist_per_snr(i), n_samples, accuracy_per_snr(i));
+                curr_snr, dist_per_snr(i), n_samples, accuracy_per_snr(i));
+            
+            % Calculate per-class accuracy for this SNR
+            for l = 1:n_classes
+                class_mask = mask & strcmp(data.TrueLabel, unique_labels{l});
+                if any(class_mask)
+                    class_snr_acc(l, i) = mean(data.Correct(class_mask)) * 100;
+                else
+                    class_snr_acc(l, i) = NaN;
+                end
+            end
         end
     end
     
     %% 3. GENERATING STUDY PLOTS
     fprintf('\nGenerating visualizations...\n');
-    figure('Color', 'w', 'Position', [100, 100, 1100, 450]);
+    figure('Color', 'w', 'Position', [100, 100, 1400, 500]);
     
-    % Subplot 1: Accuracy vs SNR & Distance
-    if exist('accuracy_per_snr', 'var')
+    % Subplot 1: Overall Accuracy vs SNR & Distance
+    
+    % Subplot 2: Per-Modulation Accuracy vs SNR (Superimposed)
+    if exist('class_snr_acc', 'var')
         subplot(1, 2, 1);
-        yyaxis left
-        plot(snr_bins, accuracy_per_snr, '-bo', 'LineWidth', 2, 'MarkerFaceColor', 'b');
-        ylabel('Classification Accuracy (%)');
-        xlabel('Signal-to-Noise Ratio (dB)');
-        ylim([0 105]);
+        hold on;
+        colors = lines(n_classes);
+        for l = 1:n_classes
+            plot(snr_bins, class_snr_acc(l, :), '-o', 'LineWidth', 1.5, ...
+                'Color', colors(l,:), 'DisplayName', unique_labels{l});
+        end
+        hold off;
         grid on;
-        
-        yyaxis right
-        plot(snr_bins, dist_per_snr, '--rs', 'LineWidth', 1.5);
-        ylabel('Emulated Relative Distance (D/D0)');
-        set(gca, 'XDir', 'reverse'); % Lower SNR = Further Distance
-        
-        title('Robustness across Channel Conditions');
-        legend('Accuracy', 'Rel. Distance', 'Location', 'southwest');
+        xlabel('SNR (dB)');
+        ylabel('Accuracy (%)');
+        title('Per-Class SNR Robustness');
+        legend('Location', 'best');
+        ylim([0 105]); % Keep consistent with distance plot
     end
     
-    % Subplot 2: Confusion Matrix Heatmap
+    % Subplot 3: Confusion Matrix Heatmap
     if exist('confusion_mat', 'var')
         subplot(1, 2, 2);
         h = heatmap(unique_labels, unique_labels, confusion_mat);

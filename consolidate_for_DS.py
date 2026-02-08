@@ -54,7 +54,12 @@ def standardize_df(df, source_name):
         df['truelabel'] = df['truelabel'].str.upper()
         # Fix common MATLAB to Python label naming
         df['truelabel'] = df['truelabel'].replace('4PSK', 'QPSK')
-        
+
+    # Ensure prediction is uppercase so MATLAB strcmp matches TrueLabel (e.g. HOC uses '8psk' -> '8PSK')
+    if 'prediction' in df.columns:
+        df['prediction'] = df['prediction'].astype(str).str.upper()
+        df['prediction'] = df['prediction'].replace('4PSK', 'QPSK')
+
     return df
 
 def main():

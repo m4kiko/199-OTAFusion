@@ -6,27 +6,27 @@ import glob
 
 # --- CONFIGURATION ---
 # Path to your 8PSK NPY_Payload folder
-INPUT_DIR = r'D:\w\Documents\199\Captured Signals\BPSK\NPY_Payload'
+INPUT_DIR = r'D:\w\Documents\199\data\Phase1_Wired_Dataset\vit_npy_data\64QAM'
 MOD_TYPE = '8PSK'
 
 # ═══════════════════════════════════════════════════════════════════════════
 # PREVIEW & EXPORT MODES
 # ═══════════════════════════════════════════════════════════════════════════
 
-LIVE_PREVIEW_MODE = True  # True = Fast preview on screen, False = Slower for GIF quality
-SAVE_GIF = False  # Set to True to save animation as GIF
+LIVE_PREVIEW_MODE = False  # True = Fast preview on screen, False = Slower for GIF quality
+SAVE_GIF = True  # Set to True to save animation as GIF
 
 # Animation Speed (milliseconds between frames)
 LIVE_FRAME_INTERVAL = 50   # Fast speed for live preview (50ms = 20fps)
-GIF_FRAME_INTERVAL = 100   # Slower for smoother GIF recording
+GIF_FRAME_INTERVAL = 80   # Slower for smoother GIF recording
 
 # Visualization Options
 DEROTATE = True  
 
 # GIF Export Options
 GIF_OUTPUT_PATH = 'constellation_animation.gif'  # Output filename
-GIF_FPS = 10  # Frames per second for GIF (lower = slower, smaller file)
-GIF_DPI = 100  # Resolution (lower = smaller file, faster processing)
+GIF_FPS = 5  # Frames per second for GIF (lower = slower, smaller file)
+GIF_DPI = 50  # Resolution (lower = smaller file, faster processing)
 
 # --- GENERATE REFERENCE SIGNAL (Python) ---
 def generate_reference_8psk(n_samples=1024):
@@ -114,6 +114,16 @@ def main():
         return
 
     print(f"Found {len(signal_files)} captured frames to animate.")
+
+    # If there are too many frames for GIF export, subsample to keep the
+    # final animation under a reasonable frame count (and under the 1000-frame limit).
+    MAX_FRAMES_FOR_GIF = 900
+    subsampled_files = signal_files
+    if len(signal_files) > MAX_FRAMES_FOR_GIF:
+        import math
+        stride = math.ceil(len(signal_files) / MAX_FRAMES_FOR_GIF)
+        subsampled_files = signal_files[::stride]
+        print(f"⚠️  Too many frames ({len(signal_files)}). Subsampling every {stride} -> {len(subsampled_files)} frames.")
     
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
     
@@ -144,13 +154,13 @@ def main():
         print(f"▶ Recording Mode: Slower playback for better GIF quality ({GIF_FRAME_INTERVAL}ms per frame)")
 
     ani = animation.FuncAnimation(
-        fig, 
-        update_plot, 
-        frames=len(signal_files), 
-        fargs=(signal_files, sc_captured, title_text, ax2, hist_im),
-        interval=frame_interval, 
-        blit=False, 
-        repeat=True
+        fig,
+        update_plot,
+        frames=len(subsampled_files),
+        fargs=(subsampled_files, sc_captured, title_text, ax2, hist_im),
+        interval=frame_interval,
+        blit=False,
+        repeat=True,
     )
 
     # --- SAVE AS GIF ---
