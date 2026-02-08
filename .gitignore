@@ -1,0 +1,72 @@
+# ============================================
+# COOPERATIVE AMC FUSION - .gitignore
+# ============================================
+
+# ===== LARGE DATA FILES (EXTERNAL BACKUP) =====
+# These are backed up to external HDD, not GitHub
+data/**/*.mat
+data/**/*.npy
+data/**/*.npz
+data/**/*.h5
+data/**/*.hdf5
+
+# But keep small metadata files
+!data/**/*.csv
+!data/**/*.txt
+!data/**/*.json
+
+# ===== MODEL WEIGHTS (EXTERNAL BACKUP) =====
+Classifiers/**/*.mat
+Classifiers/**/*.pth
+Classifiers/**/*.h5
+fusion/**/*.mat
+
+# But keep model code
+!Classifiers/**/*.m
+!Classifiers/**/*.py
+!fusion/**/*.m
+!fusion/**/*.py
+
+# ===== PYTHON =====
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+*.egg-info/
+
+# ===== MATLAB =====
+*.asv
+*.m~
+slprj/
+*.autosave
+
+# ===== RESULTS (LARGE FILES) =====
+Data_Visualizers_Summary/**/*.mat
+Data_Visualizers_Summary/**/*.npy
+
+# Keep plots and reports
+!Data_Visualizers_Summary/**/*.png
+!Data_Visualizers_Summary/**/*.jpg
+!Data_Visualizers_Summary/**/*.pdf
+!Data_Visualizers_Summary/**/*.csv
+
+# ===== LOGS =====
+*.log
+logs/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ===== TEMP =====
+temp/
+tmp/
+*.tmp
+*.bak
+
+# ===== IDE =====
+.vscode/
+.idea/

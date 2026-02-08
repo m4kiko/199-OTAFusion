@@ -1,0 +1,2 @@
+run order:
+generate.m -> split.m -> mat_to_npy.py

@@ -1,0 +1,15 @@
+ZC/PAYLOAD SEPARATION SUMMARY
+============================
+
+Separation Date: 05-Feb-2026 22:34:57
+Total Frames Processed: 7000
+
+Component Sizes:
+  ZC Preamble: 32 samples (32.00 µs @ 1 Msps)
+  Payload: 1024 samples (1.02 ms @ 1 Msps)
+  Full Frame: 1056 samples (1.06 ms @ 1 Msps)
+
+Usage Examples:
+  1. Load full dataset: load('Separated_Dataset.mat')
+  2. Load payloads only: load('Payload_Only_Dataset.mat')
+  3. Use helpers: [zc, payload, meta] = loadSeparatedData('QPSK', [10 15])

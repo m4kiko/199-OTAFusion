@@ -1,0 +1,40 @@
+============================================================
+COOPERATIVE AMC: VI-TRANSFORMER CLASSIFICATION REPORT
+============================================================
+
+--- GLOBAL SUMMARY ---
+Total Samples Processed: 7000
+
+Distribution of Predicted Classes:
+  64QAM     : 2334 samples ( 33.3%)
+  BPSK      : 1401 samples ( 20.0%)
+  8PSK      : 1322 samples ( 18.9%)
+  16QAM     : 1204 samples ( 17.2%)
+  QPSK      :  739 samples ( 10.6%)
+
+Average System Confidence: 83.82%
+
+--- DISTANCE SIMULATION (FRIIS MAPPING) ---
+SNR (dB)   | Rel. Distance   | Avg. Accuracy  
+---------------------------------------------
+15.0       | 1.00            | 58.90         %
+12.0       | 1.41            | 60.50         %
+10.0       | 1.78            | 62.50         %
+7.0        | 2.51            | 66.00         %
+5.0        | 3.16            | 73.20         %
+2.0        | 4.47            | 78.30         %
+0.0        | 5.62            | 77.20         %
+
+--- DETAILED SAMPLE VIEW (Top 10 Most Confident) ---
+Filename                       | Prediction | Conf.   
+-------------------------------------------------------
+BPSK_SNR0_ID156.npy            | BPSK       |  100.0%
+BPSK_SNR0_ID93.npy             | BPSK       |  100.0%
+BPSK_SNR0_ID88.npy             | BPSK       |  100.0%
+BPSK_SNR0_ID40.npy             | BPSK       |  100.0%
+BPSK_SNR0_ID59.npy             | BPSK       |  100.0%
+BPSK_SNR0_ID68.npy             | BPSK       |  100.0%
+BPSK_SNR0_ID61.npy             | BPSK       |  100.0%
+BPSK_SNR0_ID143.npy            | BPSK       |  100.0%
+BPSK_SNR2_ID188.npy            | BPSK       |  100.0%
+BPSK_SNR0_ID140.npy            | BPSK       |  100.0%
